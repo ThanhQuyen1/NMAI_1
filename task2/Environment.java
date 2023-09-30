@@ -14,7 +14,7 @@ public class Environment {
 	public enum LocationState {
 		CLEAN, DIRTY
 	}
-
+	private int total =0;
 	private EnvironmentState envState;
 	private boolean isDone = false;// all squares are CLEAN
 	private Agent agent = null;
@@ -42,28 +42,58 @@ public class Environment {
 		String agentLocation = envState.getAgentLocation();
 		if (action == Environment.SUCK_DIRT) {
 			envState.setLocationState(agentLocation, LocationState.CLEAN);
-		} else if(agentLocation.equals(LOCATION_A) && action == Environment.MOVE_RIGHT  ) {
-			envState.setAgentLocation(LOCATION_B);
-		} else if(agentLocation.equals(LOCATION_A) && action == Environment.MOVE_DOWN ) {
-			envState.setAgentLocation(LOCATION_D);
-		} else if(agentLocation.equals(LOCATION_B) && action == Environment.MOVE_LEFT ) {
-			envState.setAgentLocation(LOCATION_A);
-		} else if(agentLocation.equals(LOCATION_B) && action == Environment.MOVE_DOWN ) {
-			envState.setAgentLocation(LOCATION_C);
-		} else if(agentLocation.equals(LOCATION_C) && action == Environment.MOVE_LEFT ) {
-			envState.setAgentLocation(LOCATION_D);
-		} else if(agentLocation.equals(LOCATION_C) && action == Environment.MOVE_UP ) {
-			envState.setAgentLocation(LOCATION_B);
-		} else if(agentLocation.equals(LOCATION_D) && action == Environment.MOVE_RIGHT ) {
-			envState.setAgentLocation(LOCATION_C);
-		} else if(agentLocation.equals(LOCATION_D) && action == Environment.MOVE_UP ) {
-			envState.setAgentLocation(LOCATION_A);
-		} else {
-			envState.setAgentLocation(agentLocation);
-		}
+			total +=500;
+		} else if(agentLocation.equals(LOCATION_A) ) {
+			if (action == Environment.MOVE_RIGHT  ) {
+				envState.setAgentLocation(LOCATION_B);
+				total -= 10;
+			}else if(action == Environment.MOVE_DOWN) {
+				envState.setAgentLocation(LOCATION_D);
+				total -= 10;
+			}else {
+				envState.setAgentLocation(LOCATION_A);
+				total -= 100;
+			}
+		} else if(agentLocation.equals(LOCATION_B) ) {
+			if (action == Environment.MOVE_LEFT  ) {
+				envState.setAgentLocation(LOCATION_A);
+				total -= 10;
+			}else if(action == Environment.MOVE_DOWN) {
+				envState.setAgentLocation(LOCATION_C);
+				total -= 10;
+			}else {
+				envState.setAgentLocation(LOCATION_B);
+				total -= 100;
+			}
+		} else if(agentLocation.equals(LOCATION_C) ) {
+			if (action == Environment.MOVE_LEFT  ) {
+				envState.setAgentLocation(LOCATION_D);
+				total -= 10;
+			}else if(action == Environment.MOVE_UP) {
+				envState.setAgentLocation(LOCATION_B);
+				total -= 10;
+			}else {
+				envState.setAgentLocation(LOCATION_C);
+				total -= 100;
+			}
+		} else if(agentLocation.equals(LOCATION_D) ) {
+			if (action == Environment.MOVE_RIGHT  ) {
+				envState.setAgentLocation(LOCATION_C);
+				total -= 10;
+			}else if(action == Environment.MOVE_UP) {
+				envState.setAgentLocation(LOCATION_A);
+				total -= 10;
+			}else {
+				envState.setAgentLocation(LOCATION_D);
+				total -= 100;
+			}
+		} 
+		
 		return envState;
 	}
-
+	public void cost() {
+		System.out.println("Tổng điểm: " + this.total);
+	}
 	// get percept<AgentLocation, LocationState> at the current location where agent
 	// is in.
 	public Percept getPerceptSeenBy() {
@@ -106,4 +136,5 @@ public class Environment {
 			step();
 		}
 	}
+	
 }
